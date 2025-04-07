@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { users } from '../data/data';
+import { fetchAllEmployees } from '../services/firestoreService';
 import TableView from '../components/TableView';
 
 const EmployeeList = () => {
   const [searchText, setSearchText] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [allUsers, setAllUsers] = useState([]); // All fetched users
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   const headerData = ['User ID', 'First Name', 'Last Name', 'Position', 'City'];
@@ -15,19 +17,30 @@ const EmployeeList = () => {
     navigation.navigate('Profile', { user_id });
   };
 
+
   useEffect(() => {
-    if (searchText.trim() === '') {
-      setFilteredUsers(users); // Show all if input is empty
-    } else {
-      const lowerSearch = searchText.toLowerCase().trim();
-      const result = users.filter(user =>
-        user.user_id?.toString().toLowerCase().includes(lowerSearch) ||
-        user.first_name?.toLowerCase().includes(lowerSearch) ||
-        user.last_name?.toLowerCase().includes(lowerSearch)
-      );
-      setFilteredUsers(result);
-    }
-  }, [searchText]);
+    const loadData = async () => {
+      const usersFromDB = await fetchAllEmployees();
+      console.log(usersFromDB);
+      setAllUsers(usersFromDB);
+      setFilteredUsers(usersFromDB); // show all initially
+      setLoading(false);
+    };
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    const lowerSearch = searchText.toLowerCase();
+
+    const filtered = allUsers.filter(user =>
+      user.user_id.toLowerCase().includes(lowerSearch) ||
+      user.first_name.toLowerCase().includes(lowerSearch) ||
+      user.last_name.toLowerCase().includes(lowerSearch)
+    );
+
+    setFilteredUsers(filtered);
+  }, [searchText, allUsers]);
 
 
   // STEP 1: Slice fields for table (clean data for search to work properly)

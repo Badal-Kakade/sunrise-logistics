@@ -1,4 +1,4 @@
-package com.demo
+package com.employeemanagment
 
 import android.app.Application
 import com.facebook.react.PackageList
