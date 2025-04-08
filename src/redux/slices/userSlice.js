@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { users } from '../../data/data';
 
 
 const userSlice = createSlice({
   name: 'users',
-  initialState: users,
+  initialState: [],
   reducers: {
+    // Set all users (bulk replace, typically from Firebase)
+    setUsers: (state, action) => {
+      return action.payload; // action.payload should be an array of user objects
+    },
+
     updateUser: (state, action) => {
       const index = state.findIndex(u => u.user_id === action.payload.user_id);
       if (index !== -1) {
@@ -15,5 +19,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateUser } = userSlice.actions;
+export const {setUsers, updateUser } = userSlice.actions;
 export default userSlice.reducer;

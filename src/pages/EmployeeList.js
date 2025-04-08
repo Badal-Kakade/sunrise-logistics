@@ -3,10 +3,10 @@ import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 import { fetchAllEmployees } from '../services/firestoreService';
 import TableView from '../components/TableView';
-
+import { useSelector } from 'react-redux';
 const EmployeeList = () => {
+  const allUsers = useSelector(state => state.users); // from Redux
   const [searchText, setSearchText] = useState('');
-  const [allUsers, setAllUsers] = useState([]); // All fetched users
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -21,8 +21,6 @@ const EmployeeList = () => {
   useEffect(() => {
     const loadData = async () => {
       const usersFromDB = await fetchAllEmployees();
-      console.log(usersFromDB);
-      setAllUsers(usersFromDB);
       setFilteredUsers(usersFromDB); // show all initially
       setLoading(false);
     };
@@ -58,7 +56,6 @@ const EmployeeList = () => {
       </TouchableOpacity>
     ),
   }));
-  console.log(formattedData);
   return (
     <View style={styles.container}>
       <TextInput
@@ -80,6 +77,6 @@ export default EmployeeList;
 
 const styles = StyleSheet.create({
   container: { flex: 1, paddingTop: 10},
-  searchInput: { marginHorizontal: 15, marginBottom: 10, padding: 10, backgroundColor: '#f2f2f2', borderRadius: 8, fontSize: 16},
+  searchInput: { marginHorizontal: 15, marginBottom: 10, padding: 10, backgroundColor: '#f2f2f2', borderRadius: 8, fontSize: 16, borderWidth: 1, borderColor: '#ccc', marginVertical: 5},
   linkText: { color: '#007bff', textDecorationLine: 'underline'},
 });

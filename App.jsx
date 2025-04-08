@@ -8,12 +8,13 @@ enableScreens();
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import store from './src/redux/store';
 import AppNavigator from './src/navigation/AppNavigator';
+import { fetchUsers } from './src/services/userThunks';
 
 function App() {
   return (

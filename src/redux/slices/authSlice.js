@@ -1,5 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { user_credential } from '../../data/data';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { validateUserLogin } from '../../services/authService';
+
+export const loginUser = createAsyncThunk(
+  'auth/loginUser',
+  async ({ username, password }, { rejectWithValue }) => {
+    try {
+      const result = await validateUserLogin(username, password);
+
+      if (result.error) {return rejectWithValue(result.error);}
+      if (result.setPass) {return { setPass: true, user: result.user };}
+      return { user: result.user };
+    } catch (error) {
+      return rejectWithValue('Login failed');
+    }
+  }
+);
 
 const initialState = {
   isAuthenticated: false,
@@ -12,27 +27,31 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login(state, action) {
-      const { username, password } = action.payload;
-      const user = user_credential.find((u) => u.username === username && u.password === password);
-      const usern = user_credential.find((u) => u.username === username && u.password === null);
-      if (user) {
-        state.isAuthenticated = true;
-        state.user = user;
-        state.error = null;
-      } else if (!user && usern ) {
-        state.setPass = true;
-      } else {
-        state.error = 'Invalid username or password';
-      }
-    },
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;
+      state.setPass = false;
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.fulfilled, (state, action) => {
+        if (action.payload.setPass) {
+          state.setPass = true;
+          state.user = action.payload.user;
+          state.error = null;
+        } else {
+          state.isAuthenticated = true;
+          state.user = action.payload.user;
+          state.error = null;
+        }
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.error = action.payload;
+      });
+  },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

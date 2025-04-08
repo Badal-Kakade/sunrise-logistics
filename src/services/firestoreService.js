@@ -1,4 +1,4 @@
-import { collection, getDocs, getDoc, doc, query, where, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, query, where, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../config/firebaseConfig';
 
 // Collection name
@@ -10,7 +10,7 @@ export const fetchAllEmployees = async () => {
     const snapshot = await getDocs(collection(db, EMPLOYEES_COLLECTION));
     console.log('🔥 Snapshot size:', snapshot.size); // Log number of docs
     console.log('📃 Raw docs:', snapshot.docs.map(d => d.data())); // Log actual doc data
-    const employees = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const employees = snapshot.docs.map(doc => ({ user_id: doc.id, ...doc.data() }));
     return employees;
   } catch (error) {
     console.error('Error fetching employees:', error);

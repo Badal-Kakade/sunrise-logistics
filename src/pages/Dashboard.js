@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import TableView from '../components/TableView';
 import ButtonTile from '../components/ButtonTile';
+import { fetchUsers } from '../services/userThunks';
 
 const Dashboard = ({ navigation }) => {
 
@@ -11,6 +12,13 @@ const Dashboard = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
   const userInfo = useSelector((state) => state.users.find((u) => u.user_id === user?.user_id));
   const attendanceLogs = useSelector((state) => state.attendance.find((a) => a.user_id === user?.user_id)?.logs || []);
+  useEffect(()=>{
+    console.log(user);
+    console.log(userInfo);
+  });
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
   const handleLogout = () =>{
     dispatch(logout());
     navigation.navigate('Login');
