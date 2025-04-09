@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import TableView from '../components/TableView';
 import ButtonTile from '../components/ButtonTile';
-import { fetchUsers } from '../services/userThunks';
+import { fetchAttendData, fetchUsers } from '../services/userThunks';
 
 const Dashboard = ({ navigation }) => {
 
@@ -12,13 +12,13 @@ const Dashboard = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
   const userInfo = useSelector((state) => state.users.find((u) => u.user_id === user?.user_id));
   const attendanceLogs = useSelector((state) => state.attendance.find((a) => a.user_id === user?.user_id)?.logs || []);
-  useEffect(()=>{
-    console.log(user);
-    console.log(userInfo);
-  });
   useEffect(() => {
     dispatch(fetchUsers());
+    dispatch(fetchAttendData());
   }, [dispatch]);
+  useEffect(()=>{
+    console.log(attendanceLogs);
+  });
   const handleLogout = () =>{
     dispatch(logout());
     navigation.navigate('Login');
@@ -51,7 +51,7 @@ const Dashboard = ({ navigation }) => {
         </View>
         <View style={styles.atte_view}>
         <Text style={{fontSize: 20, fontWeight:'600'}}>Attendance:</Text>
-        <TableView data = {attendanceLogs} headerData={attendanceHeader} perPageCount="5" />
+        {/* <TableView data = {attendanceLogs} headerData={attendanceHeader} perPageCount="5" /> */}
         </View>
         <Button title="Logout" onPress={handleLogout} />
       </View>

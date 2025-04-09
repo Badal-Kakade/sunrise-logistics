@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { attendance } from '../../data/data';
 
 const attendanceSlice = createSlice({
   name: 'attendance',
-  initialState: attendance,
-  reducers: {},
+  initialState: [],
+  reducers: {
+    setAttendance(state, action) {
+      return action.payload;
+    },
+  },
 });
 
+export const { setAttendance } = attendanceSlice.actions;
 export default attendanceSlice.reducer;

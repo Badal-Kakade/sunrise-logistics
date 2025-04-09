@@ -20,7 +20,6 @@ const ProfilePage = ({ route }) => {
 
   const handleUpdateUser = (updatedUser) => {
     dispatch(updateUser(updatedUser));
-    console.log('Updated user:', updatedUser);
   };
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>

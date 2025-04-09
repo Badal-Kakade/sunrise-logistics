@@ -8,8 +8,6 @@ const EMPLOYEES_COLLECTION = 'users';
 export const fetchAllEmployees = async () => {
   try {
     const snapshot = await getDocs(collection(db, EMPLOYEES_COLLECTION));
-    console.log('🔥 Snapshot size:', snapshot.size); // Log number of docs
-    console.log('📃 Raw docs:', snapshot.docs.map(d => d.data())); // Log actual doc data
     const employees = snapshot.docs.map(doc => ({ user_id: doc.id, ...doc.data() }));
     return employees;
   } catch (error) {

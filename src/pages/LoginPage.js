@@ -17,7 +17,6 @@ const LoginPage = ({ navigation }) => {
   useEffect(() => {
     if (auth.isAuthenticated) {
       navigation.navigate('Dashboard');
-      console.log('login successful');
     }
   }, [auth.isAuthenticated, navigation]);
 
