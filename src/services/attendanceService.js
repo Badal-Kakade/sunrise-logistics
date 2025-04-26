@@ -65,6 +65,7 @@ export const fetchAttendance = async() =>{
   try {
       const snapshot = await getDocs(collection(db, ATTENDANCE_COLLECTION));
       const attendancedata = snapshot.docs.map(doc => ({ user_id: doc.id, ...doc.data() }));
+      console.log(attendancedata);
       return attendancedata;
     } catch (error) {
       console.error('Error fetching employees:', error);

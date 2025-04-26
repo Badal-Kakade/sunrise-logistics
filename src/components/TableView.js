@@ -36,7 +36,7 @@ const TableView = ({data, headerData, perPageCount}) => {
           {Object.entries(item).map(([key, value]) => {
             if (key !== 'log_id') { // Skip displaying log_id if not needed
               return (
-                <DataTable.Cell key={key}>
+                <DataTable.Cell style={styles.data_cell} key={key}>
                   {value || '—'}
                 </DataTable.Cell>
               );
@@ -65,5 +65,6 @@ export default TableView;
 const styles = StyleSheet.create({
     table_view: { width: screenWidth - 30, backgroundColor: 'white', alignSelf: 'center', marginTop: 10, borderRadius: 8, overflow: 'hidden', elevation: 2, // adds subtle shadow for Android
       },
-    col_view: {width: '24%'},
+    col_view: {width: '20%'},
+    data_cell:{marginHorizontal:1,},
 });

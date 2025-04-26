@@ -9,7 +9,14 @@ export const fetchAllEmployees = async () => {
   try {
     const snapshot = await getDocs(collection(db, EMPLOYEES_COLLECTION));
     const employees = snapshot.docs.map(doc => ({ user_id: doc.id, ...doc.data() }));
-    return employees;
+    const sortedEmployee = [...employees].sort((a, b) => {
+      const userIdA = typeof a.user_id === 'string' ? a.user_id : '';
+      const userIdB = typeof b.user_id === 'string' ? b.user_id : '';
+      const numA = parseInt(userIdA.replace('sunrise', ''), 10) || 0;
+      const numB = parseInt(userIdB.replace('sunrise', ''), 10) || 0;
+      return numA - numB;
+    });
+    return sortedEmployee;
   } catch (error) {
     console.error('Error fetching employees:', error);
     return [];

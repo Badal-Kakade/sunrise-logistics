@@ -46,8 +46,9 @@ const Dashboard = ({ navigation }) => {
         <View style={styles.btn_view}>
           <ButtonTile handleClick = {handleAttend} btn_label={'Attendance'} />
           <ButtonTile handleClick = {handleProfile} btn_label={'View Profile'} />
-          {(userInfo?.position === 'Manager' || userInfo?.position === 'Supervisor' ) && <ButtonTile handleClick = {handleEmpList} btn_label={'Employee List'} />}
-          {userInfo?.position === 'Manager'  && <ButtonTile handleClick = {handleEmpList} btn_label={'Supervisor List'} />}
+          {userInfo?.position === 'Admin'  && <ButtonTile handleClick = {handleEmpList} btn_label={'Manager List'} />}
+          {(userInfo?.position === 'Admin' || userInfo?.position === 'Manager')  && <ButtonTile handleClick = {handleEmpList} btn_label={'Supervisor List'} />}
+          {(userInfo?.position === 'Admin' || userInfo?.position === 'Manager' || userInfo?.position === 'Supervisor' ) && <ButtonTile handleClick = {handleEmpList} btn_label={'Employee List'} />}
         </View>
         <View style={styles.atte_view}>
         <Text style={{fontSize: 20, fontWeight:'600'}}>Attendance:</Text>

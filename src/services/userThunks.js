@@ -14,7 +14,7 @@ export const fetchUsers = () => async (dispatch) => {
   }
 };
 
-// Thunk to fetch users from Firebase
+
 export const fetchAttendData = () => async (dispatch) =>{
   try{
     const attendData = await fetchAttendance();

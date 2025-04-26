@@ -30,13 +30,11 @@ const EmployeeList = () => {
 
   useEffect(() => {
     const lowerSearch = searchText.toLowerCase();
-
     const filtered = allUsers.filter(user =>
       user.user_id.toLowerCase().includes(lowerSearch) ||
       user.first_name.toLowerCase().includes(lowerSearch) ||
       user.last_name.toLowerCase().includes(lowerSearch)
     );
-
     setFilteredUsers(filtered);
   }, [searchText, allUsers]);
 
